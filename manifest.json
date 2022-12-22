@@ -1,0 +1,37 @@
+{
+  "name": "Magic Scraper",
+  "description": "Scrapes data from structured content.",
+  "version": "1.0",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": [
+    "storage",
+    "activeTab",
+    "background",
+    "scripting",
+    "webNavigation",
+    "tabs",
+    "unlimitedStorage",
+    "contentSettings",
+    "webNavigation",
+    "cookies",
+    "downloads"
+  ],
+  "action": {
+    "default_icon": {
+      "48": "/icons/48.png",
+      "128": "/icons/128.png"
+    }
+  },
+  "host_permissions": [
+    "https://www.gstatic.com/*",
+    "https://www.amazon.in/*"
+  ],
+  "icons": {
+    "48": "/icons/48.png",
+    "128": "/icons/128.png"
+  },
+  "options_page": "popup.html"
+}
