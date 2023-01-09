@@ -1,39 +1,93 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="bootstrap.min.css" />
-    <link rel="stylesheet" href="popup.css" />
-    <link
-      href="https://unpkg.com/tabulator-tables@4.9.3/dist/css/tabulator.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-    />
-  </head>
-  <body class="bg-dark p-2">
-    
-    <h2 class="text-light">Amazon Books Details</h2>
 
-    <table class="table table-hover table-striped">
-      <thead>
-        <tr>
-          <th scope='col'>Cover</th>
-          <th scope="col">Title</th>
-          <th scope="col">Price</th>
-          <th scope="col">Pages</th>
-          <th scope="col">Ranking</th>
-          <th scope="col">Url</th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="./dependencies/x-spreadsheet/dist/xspreadsheet.css">
+  <link rel="stylesheet" href="popup.css" />
+  <link rel="stylesheet" href="./dependencies/bootstrap-5.0.2-dist/css/bootstrap.min.css" />
+</head>
 
-    <script type="text/javascript" src="dependencies/bootstrap.bundle.min.js"></script>
-    <script src="popup.js"></script>
-  </body>
+<body class="bg-dark">
+  <div class="branding border-bottom border-secondary text-light p-2">
+    <h2>Magic Scrape</h2>
+  </div>
+
+  <div class="container-sm d-flex flex-column justify-content-between gap-3">
+
+    <div class="align-self-start mt-3">
+      <div for="" class="text-light">Select a Mode</div>
+      <div class="btn-group mt-1 pt-0" role="group" aria-label="Basic outlined example">
+        <button type="button" class="btn btn-outline-primary">Table</button>
+        <button type="button" class="btn btn-outline-primary">Link</button>
+        <button type="button" class="btn btn-outline-primary">Text</button>
+      </div>
+    </div>
+
+
+    <div class="border border-1 border-secondary p-2 rounded d-flex flex-column gap-3">
+      <div>
+        <h4 class="text-light">Table Preview</h4>
+        <div class="table-responsive">
+          <table class="table align-middle caption-top table-dark table-striped table-bordered table-hover table-sm">
+            <caption>Showing only the first 5 items</caption>
+            <thead>
+              <tr>
+                <th class="text-info" scope="col">
+                  <div class="fs-sm">Header 3</div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Mark</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <button id="start-injection" type="button" class="btn btn-success align-self-center">Select Table</button>
+    </div>
+
+    <div class="border border-1 border-secondary p-2 rounded d-flex flex-column gap-3">
+      <div>
+        <div class="fw-bold text-light">Link Preview</div>
+        <div class="d-flex text-light gap-2">
+          <div>1.</div>
+          <div class="text-warning">https://somewebsite.com/scrape</div>
+        </div>
+      </div>
+
+      <button id="start-injection" type="button" class="btn btn-success align-self-center">Select Link</button>
+    </div>
+
+    <div class="border border-1 border-secondary p-2 rounded d-flex flex-column gap-3">
+      <div>
+        <div class="fw-bold text-light">Text Preview</div>
+        <div class="d-flex text-light gap-2">
+          <div>1.</div>
+          <div class="text-warning">Quote of the day</div>
+        </div>
+      </div>
+
+      <button id="start-injection" type="button" class="btn btn-success align-self-center">Select Text</button>
+    </div>
+
+    <button id="start-injection" type="button" class="btn btn-danger align-self-center">
+     <div>Next</div>
+     <small></small>
+    </button>
+
+  </div>
+
+  <script src="./dependencies/x-spreadsheet/dist/xspreadsheet.js"></script>
+  <script src="./dependencies/xlsx-latest.js"></script>
+  <script src="./Utils/xspreadsheet_to_xlsx.js"></script>
+  <script src="./dependencies/bootstrap-5.0.2-dist/js/bootstrap.min.js"></script>
+  <script src="./popup utils/popuputils.js"></script>
+  <script src="popup.js"></script>
+</body>
+
 </html>

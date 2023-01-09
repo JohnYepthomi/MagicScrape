@@ -110,7 +110,7 @@ export async function asyncStorageSet(item) {
     });
 }
 
-export function startMutationObserver() {
+export function startMutationObserver(selector) {
     console.log('starting mutation observer');
 
     let observer = new MutationObserver((mutations) => {
@@ -125,7 +125,7 @@ export function startMutationObserver() {
         })
     })
 
-    observer.observe(document.querySelector('#search > div.s-desktop-width-max.s-desktop-content.s-opposite-dir.sg-row > div.s-matching-dir.sg-col-16-of-20.sg-col.sg-col-8-of-12.sg-col-12-of-16 > div > span:nth-child(4) > div.s-main-slot.s-result-list.s-search-results.sg-row'), {
+    observer.observe(document.querySelector(selector), {
         childList: true
         , subtree: true
         , attributes: false
@@ -138,6 +138,25 @@ export function startMutationObserver() {
 export function StopMutationObserver(observer) {
     console.log('Stopping MutationObserver')
     observer.disconnect();
+}
+
+export function LogService(scop, color) {
+    const logService = {
+        info: (message) =>
+            console.log(
+                scope + "%c" + " " + message,
+                `color: ${color ? color : "teal"}; font-style: italic;`
+            ),
+        error: (message) =>
+            console.error(
+                scope + "%c" + " " + message,
+                `color: ${color ? color : "red"}`
+            ),
+    };
+
+    Object.freeze(logService);
+
+    return logService;
 }
 
 module.exports = {

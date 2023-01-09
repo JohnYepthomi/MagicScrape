@@ -25,9 +25,15 @@
       "128": "/icons/128.png"
     }
   },
+  "content_scripts": [
+    {
+      "matches": ["https://*/*"],
+      "js": ["./contentscripts/firstContent.js"]
+    }
+  ],
   "host_permissions": [
-    "https://www.gstatic.com/*",
-    "https://www.amazon.in/*"
+    "https://*/*",
+    "https://*/*"
   ],
   "icons": {
     "48": "/icons/48.png",

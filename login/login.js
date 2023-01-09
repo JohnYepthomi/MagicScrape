@@ -3,17 +3,17 @@ let emailInput = document.getElementById("email");
 let passInput = document.getElementById("password");
 
 var firebaseConfig = {
-  apiKey: "AIzaSyBfx00MvbvolEe6DJdw8nKYPMotXdm5nbg",
-  authDomain: "chrome-ext-9c9aa.firebaseapp.com",
-  projectId: "chrome-ext-9c9aa",
-  storageBucket: "chrome-ext-9c9aa.appspot.com",
-  messagingSenderId: "517841050613",
-  appId: "1:517841050613:web:8b92ae0000eaa99beedebc",
+  apiKey: "",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: "",
 };
 
 firebase.initializeApp(firebaseConfig);
 
-chrome.storage.local.set({ l: 0, t: 1 }, () => {});
+chrome.storage.local.set({ l: 0, t: 1 }, () => { });
 
 signInBtn.addEventListener("click", async function () {
   let email = emailInput.value;
