@@ -2,7 +2,7 @@
  * last changes:
  * @Removed "Column-found" runtime message to popup() when Row found in search() function.
  * @removed call to isntantly highlight counterElements when a Row is found in the onCompletion() function
- * @Fix filterAnomalies() as it seemingly returns unfiltered array
+ * @Fix filterAnomalies() as it returns unfiltered array
  */
 
 let prevHoverEl = "";
@@ -72,21 +72,28 @@ class FindColParent {
     this.finalCandidate = candidate;
 
     if (ValidateColParent.validateConsecutivePairs(sibs)) {
-      const filteredSibs = ValidateColParent.filterAnomalies(sibs);
+      const filteredSibs = ValidateColParent.filterAnomalies(Array.from(sibs));
       console.log("filteredSibs: ", filteredSibs);
       if (this.prevSibs.length > 0) {
         this.prevSibs.forEach((sib) => removeParentHighlight(sib));
       }
 
-      filteredSibs.forEach((sib) => {
-        if (sib) {
-          highlightParentEl(sib);
-        }
-      });
+      if (filteredSibs) {
+        filteredSibs.forEach((sib) => {
+          if (sib) {
+            highlightParentEl(sib);
+          }
+        });
+      } else {
+        Object.values(sibs).forEach((sib) => {
+          if (sib) {
+            highlightParentEl(sib);
+          }
+        });
+      }
 
       this.result = candidate;
-      this.prevSibs = [...filteredSibs];
-      //   this.findCounterElements(sibs, this.hoverEl);
+      this.prevSibs = [...(filteredSibs ? filteredSibs : sibs)];
 
       removeDocumentHoverListener();
       console.log("FINAL PARENT: ", candidate);
@@ -139,10 +146,10 @@ class FindColParent {
       return;
     }
 
-    console.log("this.prevSibs: ", this.prevSibs);
+    let tableData = {};
 
-    const tableData = this.prevSibs.map((s) => {
-      return getTableData(s);
+    this.prevSibs.forEach((s) => {
+      tableData[getRealtiveXPathToChild(s, s.parentElement)] = getTableData(s);
     });
 
     await sendRuntimeMessage("column-found", tableData);
@@ -202,34 +209,26 @@ class ValidateColParent {
   }
 
   static filterAnomalies(sibs) {
-    let sibsArr = Array.from(sibs);
-    let lengthsArr = [];
-    let numCountsArr = {};
-    sibsArr.forEach((sib) => lengthsArr.push(sib.childElementCount));
-    lengthsArr = Array.from(new Set(lengthsArr));
-    sibsArr.forEach((sib) => {
-      lengthsArr.forEach((len) => {
-        if (sib.childElementCount === len) {
-          numCountsArr[len] = [
-            ...(numCountsArr[len] ? numCountsArr[len] : []),
-            sib,
-          ];
-        }
-      });
+    if (sibs[0].classList.value === "") return undefined;
+    
+    const sibsArr = Array.from(sibs);
+    const classes = sibs.map((sib) => sib.classList.value);
+    console.log({ classes });
+    const uniqueClasses = FindDuplicateItems(classes);
+    console.log({ uniqueClasses });
+
+    const candidateClass = uniqueClasses.reduce((acc, curr) => {
+      const currLen = sibsArr.filter(
+        (sib) => sib.classList.value === curr
+      ).length;
+      const accLen = sibsArr.filter(
+        (sib) => sib.classList.value === acc
+      ).length;
+      if (currLen > accLen) return curr;
+      else return acc;
     });
 
-    let count = 0;
-    let key = "";
-    Object.keys(numCountsArr).forEach((lenKey) => {
-      if (numCountsArr[lenKey].length > count) {
-        count = numCountsArr[lenKey].length;
-        key = lenKey;
-      }
-    });
-
-    sibsArr = null;
-
-    return numCountsArr[key];
+    return sibs.filter((sib) => sib.classList.value === candidateClass);
   }
 
   static validateByTags(n1, n2) {
@@ -254,6 +253,31 @@ class ValidateColParent {
 }
 
 /* UTILITIES */
+
+//find only the items that have duplicates
+function FindDuplicateItems(arry) {
+  const uniqueElements = new Set(arry);
+  const filteredElements = arry.filter((item) => {
+    if (uniqueElements.has(item)) {
+      uniqueElements.delete(item);
+    } else {
+      return item;
+    }
+  });
+
+  return [...new Set(filteredElements)];
+}
+
+function removeAllChildren(e) {
+  let child = e.lastElementChild;
+  while (child) {
+    e.removeChild(child);
+    child = e.lastElementChild;
+  }
+
+  return e;
+}
+
 function getHoverText(el) {
   if (!el) {
     return;
